@@ -22,9 +22,9 @@ func main() {
 
 func fileExists(fileInput string) bool {
 	_, errStat := os.Stat(fileInput)
-  doesExist := true
+  boolStatus := true
 	if errStat != nil {
-		return false
+		boolStatus = false
 	}
-	return doesExist
+	return boolStatus
 }
