@@ -5,19 +5,22 @@ import (
 	"os"
 	"flag"
 	"path/filepath"
+	"strings"
+	"strconv"
 )
 
 func main() {
-	fileNamePtr := flag.String("file", "", "Path to file")
+	oldFileNamePtr := flag.String("file", "", "Path to file")
 	flag.Parse()
-	fileName := *fileNamePtr
 
-	i := 0
-	for fileExists(fileName) {
-		fmt.Println(filepath.Base(fileName))
-		fileName = "literally anything else"
-		i++
+	fileNameBase := strings.TrimSuffix(*oldFileNamePtr, filepath.Ext(*oldFileNamePtr))
+	fileNameExt := filepath.Ext(*oldFileNamePtr)
+	newFileName := *oldFileNamePtr
+
+	for i := 0; fileExists(newFileName); i++ {
+		newFileName = fileNameBase+" "+strconv.Itoa(i)+fileNameExt
 	}
+	fmt.Println(newFileName)
 }
 
 func fileExists(fileInput string) bool {
