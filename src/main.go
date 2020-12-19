@@ -3,15 +3,20 @@ package main
 import (
 	"fmt"
 	"os"
-	"flag"
+	"github.com/akamensky/argparse"
 	"path/filepath"
 	"strings"
 	"strconv"
 )
 
 func main() {
-	oldFileNamePtr := flag.String("file", "", "Path to file")
-	flag.Parse()
+	parser := argparse.NewParser("incremental file name", "Generates a new file name from user input")
+	oldFileNamePtr := parser.String("f", "file", &argparse.Options{Required: true, Help: "File name to modify"})
+	parserErr := parser.Parse(os.Args)
+
+	if parserErr != nil {
+		fmt.Println(parser.Usage(parserErr))
+	}
 
 	fileNameBase := strings.TrimSuffix(*oldFileNamePtr, filepath.Ext(*oldFileNamePtr))
 	fileNameExt := filepath.Ext(*oldFileNamePtr)
